@@ -1,7 +1,12 @@
+
 const Home = () => {
   return (
     <div>
-      <h2>this is home componets</h2>
+      <div>
+        <h2 className="text-5xl font-semibold text-gray-100">Welcome To Email Login System</h2>
+      </div>
+
+      
     </div>
   );
 };
