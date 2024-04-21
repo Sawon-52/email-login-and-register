@@ -1,21 +1,37 @@
-import { useState } from "react";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import app from "../../Firebase/firebase.config";
 
 const Register = () => {
-  const [name, setName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  // const [name, setName] = useState(null);
+  // const [email, setEmail] = useState(null);
+  // const [password, setPassword] = useState(null);
+  // console.log(name,email,password);
+
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
-    setName(name);
+    // setName(name);
     const email = e.target.email.value;
-    setEmail(email);
+    // setEmail(email);
     const password = e.target.password.value;
-    setPassword(password);
-  };
-  
+    // setPassword(password);
 
-  console.log(name, email, password);
+    // Initialize Firebase Authentication and get a reference to the service
+    const auth = getAuth(app);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        // ..
+      });
+  };
 
   return (
     <div className=" h-full z-30">
