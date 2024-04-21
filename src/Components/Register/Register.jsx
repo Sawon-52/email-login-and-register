@@ -1,11 +1,15 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
+import { useState } from "react";
 
 const Register = () => {
   // const [name, setName] = useState(null);
   // const [email, setEmail] = useState(null);
   // const [password, setPassword] = useState(null);
   // console.log(name,email,password);
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -18,17 +22,21 @@ const Register = () => {
 
     // Initialize Firebase Authentication and get a reference to the service
     const auth = getAuth(app);
+    setSuccess("");
+    setError("");
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
         console.log(user);
+        setSuccess("Created Successfully");
+
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        setError(errorMessage);
+        // console.log(errorCode, errorMessage);
         // ..
       });
   };
@@ -66,6 +74,10 @@ const Register = () => {
           </div>
         </div>
       </div>
+      {/* showing error when error will be occured */}
+      {error && <p className="p-2 bg-red-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{error}</p>}
+
+      {success && <p className="p-2 bg-green-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{success}</p>}
     </div>
   );
 };
