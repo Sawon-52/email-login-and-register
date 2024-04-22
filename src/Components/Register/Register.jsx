@@ -8,43 +8,38 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  console.log(name, email, password);
+  const [check, setCheck] = useState(false);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [passError, setPassError] = useState("");
+  const [registrationError, setregistrationError] = useState("");
   const [showpass, setShowpass] = useState(false);
 
   const handleMessageShow = () => {
     setError("");
     setSuccess("");
-    setPassError("");
+    setregistrationError("");
   };
 
   const handleShowPass = () => {
-    // console.log("show and Hide");
     setShowpass(!showpass);
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // const name = e.target.name.value;
-    // // setName(name);
-    // const email = e.target.email.value;
-    // // setEmail(email);
-    // const password = e.target.password.value;
-    // // setPassword(password);
 
     if (password.length < 6) {
-      // console.log("your password must be 6 length");
-      setPassError(" password must be 6 character");
+      setregistrationError(" password must be 6 character");
+      return;
+    } else if (check === false) {
+      setregistrationError("Accept our Trems and Conditions");
       return;
     }
 
-    setPassError("");
+    setregistrationError("");
     setSuccess("");
     setError("");
+
     // Initialize Firebase Authentication and get a reference to the service
     const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
@@ -65,9 +60,9 @@ const Register = () => {
         // console.log(errorCode, errorMessage);
         // ..
       });
-  };
 
-  console.log("after submit:", name, email, password);
+    console.log(check);
+  };
 
   return (
     <div className="h-full z-30">
@@ -99,6 +94,18 @@ const Register = () => {
                 </span>
               </div>
 
+              <div className="flex gap-2">
+                <input onChange={(e) => setCheck(e.target.checked)} type="checkbox" />
+                <label className="label">
+                  <span className="label-text">
+                    Accept our{" "}
+                    <a className="text-red-300" href="#">
+                      Terms and conditions
+                    </a>
+                  </span>
+                </label>
+              </div>
+
               <div className="form-control mt-6">
                 <button className="btn btn-primary">Register</button>
               </div>
@@ -106,6 +113,7 @@ const Register = () => {
           </div>
         </div>
       </div>
+
       {/* showing error when error will be occured */}
       {error && (
         <span className=" absolute bottom-0 right-10  flex items-center gap-8 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">
@@ -115,6 +123,7 @@ const Register = () => {
           </div>
         </span>
       )}
+
       {success && (
         <span className=" absolute bottom-0 right-10 flex items-center gap-8 p-2 bg-green-700 text-md font-semibold text-white rounded-xl my-2 text-center">
           <p>{success}</p>
@@ -123,9 +132,10 @@ const Register = () => {
           </div>
         </span>
       )}
-      {passError && (
+
+      {registrationError && (
         <span className="absolute bottom-0 right-10 flex items-center gap-8 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">
-          <p>{passError}</p>
+          <p>{registrationError}</p>
           <div onClick={handleMessageShow} className=" cursor-pointer text-xl">
             <RxCross1 />
           </div>
