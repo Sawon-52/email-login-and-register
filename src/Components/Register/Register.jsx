@@ -10,6 +10,7 @@ const Register = () => {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [passError, setPassError] = useState("");
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -20,10 +21,17 @@ const Register = () => {
     const password = e.target.password.value;
     // setPassword(password);
 
-    // Initialize Firebase Authentication and get a reference to the service
-    const auth = getAuth(app);
+    if (password.length < 6) {
+      // console.log("your password must be 6 length");
+      setPassError("your password must be 6 length");
+      return;
+    }
+
+    setPassError("");
     setSuccess("");
     setError("");
+    // Initialize Firebase Authentication and get a reference to the service
+    const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up
@@ -78,6 +86,7 @@ const Register = () => {
       {error && <p className="p-2 bg-red-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{error}</p>}
 
       {success && <p className="p-2 bg-green-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{success}</p>}
+      {passError && <p className="p-2 bg-red-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{passError}</p>}
     </div>
   );
 };
