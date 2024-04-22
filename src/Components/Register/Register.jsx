@@ -1,6 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { useState } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 const Register = () => {
   // const [name, setName] = useState(null);
@@ -11,6 +12,12 @@ const Register = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [passError, setPassError] = useState("");
+  const [showpass, setShowpass] = useState(false);
+
+  const handleShowPass = () => {
+    // console.log("show and Hide");
+    setShowpass(!showpass);
+  };
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -50,7 +57,7 @@ const Register = () => {
   };
 
   return (
-    <div className=" h-full z-30">
+    <div className="h-full z-30">
       <div className="hero h-full">
         <div className="hero-content flex-col">
           <h2 className="text-2xl text-white">Registration form</h2>
@@ -68,11 +75,15 @@ const Register = () => {
                 </label>
                 <input type="email" name="email" placeholder="email" className="input input-bordered" required />
               </div>
-              <div className="form-control">
+              <div className=" relative form-control">
                 <label className="label">
                   <span className="label-text">Password</span>
                 </label>
-                <input type="password" name="password" placeholder="password" className="input input-bordered" required />
+                <input type={showpass ? "password" : "text"} name="password" placeholder="password" className="  input input-bordered" required />
+
+                <span onClick={() => handleShowPass()} className=" absolute cursor-pointer right-2 bottom-4">
+                  {showpass ? <FaRegEye /> : <FaRegEyeSlash />}
+                </span>
               </div>
 
               <div className="form-control mt-6">
@@ -83,10 +94,9 @@ const Register = () => {
         </div>
       </div>
       {/* showing error when error will be occured */}
-      {error && <p className="p-2 bg-red-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{error}</p>}
-
-      {success && <p className="p-2 bg-green-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{success}</p>}
-      {passError && <p className="p-2 bg-red-400 text-md font-semibold text-gray-100 rounded-xl my-2 text-center">{passError}</p>}
+      {error && <p className=" absolute -bottom-7 right-10 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">{error} </p>}
+      {success && <p className=" absolute -bottom-7 right-10 p-2 bg-green-700 text-md font-semibold text-white rounded-xl my-2 text-center">{success} </p>}
+      {passError && <p className="absolute -bottom-7 right-10 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">{passError} </p>}
     </div>
   );
 };
