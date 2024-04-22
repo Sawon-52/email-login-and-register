@@ -2,6 +2,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { RxCross1 } from "react-icons/rx";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -14,6 +15,12 @@ const Register = () => {
   const [success, setSuccess] = useState("");
   const [passError, setPassError] = useState("");
   const [showpass, setShowpass] = useState(false);
+
+  const handleMessageShow = () => {
+    setError("");
+    setSuccess("");
+    setPassError("");
+  };
 
   const handleShowPass = () => {
     // console.log("show and Hide");
@@ -100,9 +107,30 @@ const Register = () => {
         </div>
       </div>
       {/* showing error when error will be occured */}
-      {error && <p className=" absolute bottom-0 right-10 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">{error} </p>}
-      {success && <p className=" absolute bottom-0 right-10 p-2 bg-green-700 text-md font-semibold text-white rounded-xl my-2 text-center">{success} </p>}
-      {passError && <p className="absolute bottom-0 right-10 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">{passError} </p>}
+      {error && (
+        <span className=" absolute bottom-0 right-10  flex items-center gap-8 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">
+          <p>{error}</p>
+          <div onClick={handleMessageShow} className=" cursor-pointer text-xl">
+            <RxCross1 />
+          </div>
+        </span>
+      )}
+      {success && (
+        <span className=" absolute bottom-0 right-10 flex items-center gap-8 p-2 bg-green-700 text-md font-semibold text-white rounded-xl my-2 text-center">
+          <p>{success}</p>
+          <div onClick={handleMessageShow} className=" cursor-pointer text-xl">
+            <RxCross1 />
+          </div>
+        </span>
+      )}
+      {passError && (
+        <span className="absolute bottom-0 right-10 flex items-center gap-8 p-2 bg-red-700 text-md font-semibold text-white rounded-xl my-2 text-center">
+          <p>{passError}</p>
+          <div onClick={handleMessageShow} className=" cursor-pointer text-xl">
+            <RxCross1 />
+          </div>
+        </span>
+      )}
     </div>
   );
 };
