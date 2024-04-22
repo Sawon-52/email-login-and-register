@@ -13,7 +13,7 @@ const Register = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [registrationError, setregistrationError] = useState("");
-  const [showpass, setShowpass] = useState(false);
+  const [showpass, setShowpass] = useState(true);
 
   const handleMessageShow = () => {
     setError("");
@@ -51,6 +51,7 @@ const Register = () => {
         setName("");
         setEmail("");
         setPassword("");
+        setCheck(false);
 
         // ...
       })
