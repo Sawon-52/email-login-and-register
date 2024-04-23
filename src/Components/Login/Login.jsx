@@ -42,7 +42,11 @@ const Login = () => {
         // Signed in
         const user = result.user;
         console.log(user);
-        setSuccessMessage("Login Successfully");
+        if (user.emailVerified) {
+          setSuccessMessage("Login Successfully");
+        } else {
+          alert("Please varified your Email address");
+        }
 
         // if login success then clear form
         setEmail("");
