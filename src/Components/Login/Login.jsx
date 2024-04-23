@@ -1,16 +1,29 @@
 import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { RxCross1 } from "react-icons/rx";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Login = () => {
+  const auth = getAuth(app);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [loginError, setLoginError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [showpass, setShowpass] = useState(true);
+
+  const handleForgotPass = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Password reset email sent!");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
 
   const handleShowPass = () => {
     setShowpass(!showpass);
@@ -24,7 +37,6 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         // Signed in
@@ -65,7 +77,7 @@ const Login = () => {
                   {showpass ? <FaRegEye /> : <FaRegEyeSlash />}
                 </span>
                 <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
+                  <a onClick={handleForgotPass} href="#" className="label-text-alt link link-hover">
                     Forgot password?
                   </a>
                 </label>
@@ -74,6 +86,12 @@ const Login = () => {
                 <button className="btn btn-primary">Login</button>
               </div>
             </form>
+            <span className="flex justify-center mb-4 gap-3">
+              <p> Don't have an account?</p>
+              <Link className="text-red-400" to={"/register"}>
+                Register
+              </Link>
+            </span>
           </div>
         </div>
       </div>

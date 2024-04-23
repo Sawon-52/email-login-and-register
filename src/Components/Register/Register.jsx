@@ -1,10 +1,12 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
+import { Link } from "react-router-dom";
 
 const Register = () => {
+  const auth = getAuth(app);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,13 +43,37 @@ const Register = () => {
     setError("");
 
     // Initialize Firebase Authentication and get a reference to the service
-    const auth = getAuth(app);
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
         console.log(user);
+
+        // sent varification
+        sendEmailVerification(auth.currentUser).then(() => {
+          alert("Checked your Email and verify your account!");
+          // Email verification sent!
+          // ...
+        });
+
         setSuccess("Created Successfully");
+
+        //update profile here add name after create it
+        updateProfile(auth.currentUser, {
+          displayName: name,
+        })
+          .then(() => {
+            // Profile updated!
+            // ...
+            console.log("profile updated!");
+          })
+          .catch((error) => {
+            // An error occurred
+            const errorMessage = error.message;
+            console.log(errorMessage);
+            // ...
+          });
         setName("");
         setEmail("");
         setPassword("");
@@ -61,8 +87,6 @@ const Register = () => {
         // console.log(errorCode, errorMessage);
         // ..
       });
-
-    console.log(check);
   };
 
   return (
@@ -111,6 +135,12 @@ const Register = () => {
                 <button className="btn btn-primary">Register</button>
               </div>
             </form>
+            <span className="flex justify-center mb-4 gap-3">
+              <p> Already have an account?</p>
+              <Link className="text-red-400" to={"/login"}>
+                Log in
+              </Link>
+            </span>
           </div>
         </div>
       </div>
