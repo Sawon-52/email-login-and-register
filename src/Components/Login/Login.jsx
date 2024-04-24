@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { useContext, useState } from "react";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { RxCross1 } from "react-icons/rx";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const Login = () => {
+  const { SignInUser } = useContext(AuthContext);
   const auth = getAuth(app);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +39,7 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    signInWithEmailAndPassword(auth, email, password)
+    SignInUser(email, password)
       .then((result) => {
         // Signed in
         const user = result.user;
