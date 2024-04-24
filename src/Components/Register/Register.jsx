@@ -1,11 +1,17 @@
-import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
+import { getAuth, updateProfile, sendEmailVerification } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const Register = () => {
+
+  //take authUser from Context
+  const authInfo = useContext(AuthContext);
+  const { createUser } = authInfo;
+
   const auth = getAuth(app);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -43,8 +49,7 @@ const Register = () => {
     setError("");
 
     // Initialize Firebase Authentication and get a reference to the service
-
-    createUserWithEmailAndPassword(auth, email, password)
+    createUser(email, password)
       .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
@@ -74,6 +79,7 @@ const Register = () => {
             console.log(errorMessage);
             // ...
           });
+
         setName("");
         setEmail("");
         setPassword("");
@@ -81,6 +87,7 @@ const Register = () => {
 
         // ...
       })
+
       .catch((error) => {
         const errorMessage = error.message;
         setError(errorMessage);

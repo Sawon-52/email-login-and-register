@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const Home = () => {
+  const authInfo = useContext(AuthContext);
+  console.log(authInfo);
   return (
     <div className="flex flex-col items-center space-y-5">
       <h2 className="text-5xl font-semibold text-gray-100">Welcome To Email Login System</h2>
