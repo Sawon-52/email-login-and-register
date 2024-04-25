@@ -3,11 +3,12 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import app from "../../Firebase/firebase.config";
 import { RxCross1 } from "react-icons/rx";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthProvider/AuthProvider";
 
 const Login = () => {
   const { SignInUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const auth = getAuth(app);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,6 +45,7 @@ const Login = () => {
         // Signed in
         const user = result.user;
         console.log(user);
+        navigate("/");
         if (user.emailVerified) {
           setSuccessMessage("Login Successfully");
         } else {
